@@ -1,16 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
-const PlaceDetailScreen = props => {
+import HeaderButton from '../components/HeaderButton';
+
+const PlacesListScreen = props => {
   return (
     <View>
-      <Text>PlaceDetailScreen</Text>
+      <Text>PlacesListScreen</Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  // style
-});
+PlacesListScreen.navigationOptions = navData => {
+  return {
+    headerTitle: 'All Places',
+    headerRight: <HeaderButtons></HeaderButtons>
+  };
+};
 
-export default PlaceDetailScreen;
+export default PlacesListScreen;
