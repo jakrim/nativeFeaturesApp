@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { HeaderTitle } from 'react-navigation-stack';
 import Colors from '../constants/Colors';
 import * as placesActions from '../store/actions/places';
+import ImageSelector from '../components/ImageSelector';
 
 const NewPlaceScreen = props => {
   const [title, setTitle] = useState('');
@@ -35,6 +35,7 @@ const NewPlaceScreen = props => {
           onChangeText={titleChangeHandler}
           value={title}
         />
+        <ImageSelector />
         <Button
           title='Save Place'
           color={Colors.primary}
