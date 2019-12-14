@@ -11,10 +11,11 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
 import Colors from '../constants/Colors';
+import MapPreview from '../components/MapPreview';
 
 const LocationSelector = props => {
-  const [pickedLocation, setPickedLocation] = useState();
   const [isFetching, setIsFetching] = useState(false);
+  const [pickedLocation, setPickedLocation] = useState();
 
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.LOCATION);
@@ -31,13 +32,14 @@ const LocationSelector = props => {
 
   const getLocationHandler = async () => {
     const hasPermission = await verifyPermissions();
-    if (!hasPermission) return;
+    if (!hasPermission) {
+      return;
+    }
     try {
       setIsFetching(true);
       const location = await Location.getCurrentPositionAsync({
         timeout: 5000
       });
-      console.log('TCL: getLocationHandler -> location', location);
 
       setPickedLocation({
         lat: location.coords.latitude,
@@ -53,15 +55,19 @@ const LocationSelector = props => {
     setIsFetching(false);
   };
 
+  // const pickOnMapHandler = () => {
+  //   props.navigation.navigate('Map');
+  // };
+
   return (
     <View style={styles.locationPicker}>
-      <View style={styles.mapPreview}>
+      <MapPreview style={styles.mapPreview} location={pickedLocation}>
         {isFetching ? (
           <ActivityIndicator size='large' color={Colors.primary} />
         ) : (
           <Text>No location chosen yet!</Text>
         )}
-      </View>
+      </MapPreview>
       <Button
         title='Get location!'
         color={Colors.primary}
@@ -80,9 +86,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 150,
     borderColor: '#ccc',
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    borderWidth: 1
   }
 });
 

@@ -20,6 +20,7 @@ const NewPlaceScreen = props => {
   const dispatch = useDispatch();
 
   const titleChangeHandler = text => {
+    // Could add validation
     setTitle(text);
   };
 
