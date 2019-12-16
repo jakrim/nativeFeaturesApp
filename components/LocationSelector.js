@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   Button,
-  StyleSheet,
+  Text,
   ActivityIndicator,
-  Alert
+  Alert,
+  StyleSheet
 } from 'react-native';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
 import Colors from '../constants/Colors';
-import MapPreview from '../components/MapPreview';
+import MapPreview from './MapPreview';
 
 const LocationSelector = props => {
   const [isFetching, setIsFetching] = useState(false);
@@ -21,8 +21,8 @@ const LocationSelector = props => {
     const result = await Permissions.askAsync(Permissions.LOCATION);
     if (result.status !== 'granted') {
       Alert.alert(
-        'insufficient Permissions',
-        'App needs location permission to access user location',
+        'Insufficient permissions!',
+        'You need to grant location permissions to use this app.',
         [{ text: 'Okay' }]
       );
       return false;
@@ -35,19 +35,19 @@ const LocationSelector = props => {
     if (!hasPermission) {
       return;
     }
+
     try {
       setIsFetching(true);
       const location = await Location.getCurrentPositionAsync({
         timeout: 5000
       });
-
       setPickedLocation({
         lat: location.coords.latitude,
         lng: location.coords.longitude
       });
     } catch (err) {
       Alert.alert(
-        'Failed to fetch location',
+        'Could not fetch location!',
         'Please try again later or pick a location on the map.',
         [{ text: 'Okay' }]
       );
@@ -55,12 +55,8 @@ const LocationSelector = props => {
     setIsFetching(false);
   };
 
-  // const pickOnMapHandler = () => {
-  //   props.navigation.navigate('Map');
-  // };
-
   return (
-    <View style={styles.locationPicker}>
+    <View style={styles.LocationSelector}>
       <MapPreview style={styles.mapPreview} location={pickedLocation}>
         {isFetching ? (
           <ActivityIndicator size='large' color={Colors.primary} />
@@ -69,7 +65,7 @@ const LocationSelector = props => {
         )}
       </MapPreview>
       <Button
-        title='Get location!'
+        title='Get User Location'
         color={Colors.primary}
         onPress={getLocationHandler}
       />
@@ -78,7 +74,7 @@ const LocationSelector = props => {
 };
 
 const styles = StyleSheet.create({
-  locationPicker: {
+  LocationSelector: {
     marginBottom: 15
   },
   mapPreview: {
