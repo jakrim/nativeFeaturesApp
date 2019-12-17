@@ -1,9 +1,21 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import {
+  View,
+  Image,
+  StyleSheet,
+  Platform,
+  TouchableNativeFeedback,
+  TouchableOpacity
+} from 'react-native';
 
 import ENV from '../env';
 
 const MapPreview = props => {
+  let TouchableComp = TouchableOpacity;
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableComp = TouchableNativeFeedback;
+  }
+
   let imagePreviewUrl;
 
   if (props.location) {
@@ -11,13 +23,16 @@ const MapPreview = props => {
   }
 
   return (
-    <View style={{ ...styles.mapPreview, ...props.style }}>
+    <TouchableComp
+      style={{ ...styles.mapPreview, ...props.style }}
+      onPress={props.onPress}
+    >
       {props.location ? (
         <Image style={styles.mapImage} source={{ uri: imagePreviewUrl }} />
       ) : (
         props.children
       )}
-    </View>
+    </TouchableComp>
   );
 };
 
