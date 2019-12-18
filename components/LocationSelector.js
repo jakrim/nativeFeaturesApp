@@ -56,7 +56,10 @@ const LocationSelector = props => {
         lat: location.coords.latitude,
         lng: location.coords.longitude
       });
-      props.onLocationPicked(pickedLocation);
+      props.onLocationPicked({
+        lat: location.coords.latitude,
+        lng: location.coords.longitude
+      });
     } catch (err) {
       Alert.alert(
         'Could not fetch location!',

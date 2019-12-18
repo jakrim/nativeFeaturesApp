@@ -27,13 +27,12 @@ export default (state = initialState, action) => {
         action.placeData.title,
         action.placeData.image,
         action.placeData.address,
-        address.placeData.coords.lat,
+        action.placeData.coords.lat,
         action.placeData.coords.lng
       );
       return {
         places: state.places.concat(newPlace)
       };
-
     default:
       return state;
   }

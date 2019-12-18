@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View,
   ScrollView,
+  View,
   Button,
   Text,
   TextInput,
@@ -15,29 +15,29 @@ import ImageSelector from '../components/ImageSelector';
 import LocationSelector from '../components/LocationSelector';
 
 const NewPlaceScreen = props => {
-  const [title, setTitle] = useState('');
+  const [titleValue, setTitleValue] = useState('');
   const [selectedImage, setSelectedImage] = useState();
   const [selectedLocation, setSelectedLocation] = useState();
+
   const dispatch = useDispatch();
 
   const titleChangeHandler = text => {
-    // Could add validation
-    setTitle(text);
+    // you could add validation
+    setTitleValue(text);
   };
 
   const imageTakenHandler = imagePath => {
     setSelectedImage(imagePath);
   };
 
-  const locationPickedHandler = useCallback(
-    location => {
-      setSelectedLocation(location);
-    },
-    [setSelectedLocation] // not necessary - won't change
-  );
+  const locationPickedHandler = useCallback(location => {
+    setSelectedLocation(location);
+  }, []);
 
   const savePlaceHandler = () => {
-    dispatch(placesActions.addPlace(title, selectedImage, selectedLocation));
+    dispatch(
+      placesActions.addPlace(titleValue, selectedImage, selectedLocation)
+    );
     props.navigation.goBack();
   };
 
@@ -48,7 +48,7 @@ const NewPlaceScreen = props => {
         <TextInput
           style={styles.textInput}
           onChangeText={titleChangeHandler}
-          value={title}
+          value={titleValue}
         />
         <ImageSelector onImageTaken={imageTakenHandler} />
         <LocationSelector
@@ -65,10 +65,8 @@ const NewPlaceScreen = props => {
   );
 };
 
-NewPlaceScreen.navigationOptions = navData => {
-  return {
-    HeaderTitle: 'Add Place'
-  };
+NewPlaceScreen.navigationOptions = {
+  headerTitle: 'Add Place'
 };
 
 const styles = StyleSheet.create({
