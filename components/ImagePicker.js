@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, Button, Image, Alert, StyleSheet } from 'react-native';
+import { View, Button, Image, Text, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
 import Colors from '../constants/Colors';
 
-const ImageSelector = props => {
+const ImgPicker = props => {
   const [pickedImage, setPickedImage] = useState();
 
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(
-      Permissions.CAMERA,
-      Permissions.CAMERA_ROLL
+      Permissions.CAMERA_ROLL,
+      Permissions.CAMERA
     );
     if (result.status !== 'granted') {
       Alert.alert(
-        'Insufficient Permissions!',
-        'Grant app permission to take a photo',
+        'Insufficient permissions!',
+        'You need to grant camera permissions to use this app.',
         [{ text: 'Okay' }]
       );
       return false;
@@ -26,8 +26,9 @@ const ImageSelector = props => {
 
   const takeImageHandler = async () => {
     const hasPermission = await verifyPermissions();
-    if (!hasPermission) return;
-
+    if (!hasPermission) {
+      return;
+    }
     const image = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [16, 9],
@@ -39,7 +40,7 @@ const ImageSelector = props => {
   };
 
   return (
-    <View style={styles.ImageSelector}>
+    <View style={styles.imagePicker}>
       <View style={styles.imagePreview}>
         {!pickedImage ? (
           <Text>No image picked yet.</Text>
@@ -48,7 +49,7 @@ const ImageSelector = props => {
         )}
       </View>
       <Button
-        title='Take Image'
+        title="Take Image"
         color={Colors.primary}
         onPress={takeImageHandler}
       />
@@ -57,7 +58,7 @@ const ImageSelector = props => {
 };
 
 const styles = StyleSheet.create({
-  ImageSelector: {
+  imagePicker: {
     alignItems: 'center',
     marginBottom: 15
   },
@@ -76,4 +77,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ImageSelector;
+export default ImgPicker;

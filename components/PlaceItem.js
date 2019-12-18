@@ -1,42 +1,39 @@
 import React from 'react';
 import {
   View,
+  Button,
   Text,
   Image,
-  Platform,
   StyleSheet,
-  TouchableOpacity,
-  TouchableNativeFeedback
+  Alert,
+  TouchableOpacity
 } from 'react-native';
 import Colors from '../constants/Colors';
 
-const PlaceItem = props => {
-  let TouchableComp = TouchableOpacity;
+import { useDispatch } from 'react-redux';
+import * as placesActions from '../store/places-actions';
 
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableComp = TouchableNativeFeedback;
-  }
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import CustomHeaderButton from './HeaderButton';
+
+const PlaceItem = props => {
+  const dispatch = useDispatch();
 
   return (
-    <TouchableComp onPress={props.onSelect}>
-      <View style={styles.placeItem}>
-        <Image style={styles.image} source={{ uri: props.image }} />
-        <View style={styles.infoContainer}>
-          <Text style={styles.title}>{props.title}</Text>
-          <Text style={styles.address}>{props.address}</Text>
-        </View>
+    <TouchableOpacity onPress={props.onSelect} style={styles.placeItem}>
+      <Image style={styles.image} source={{ uri: props.image }} />
+      <View style={styles.infoContainer}>
+        <Text style={styles.title}>{props.title}</Text>
+        <Text style={styles.address}>{props.address}</Text>
       </View>
-    </TouchableComp>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   placeItem: {
-    width: '100%',
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1,
     paddingVertical: 15,
-    paddingHorizontal: 30,
+    paddingHorizontal: 15,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -44,24 +41,27 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: 'blue',
+    backgroundColor: '#ccc',
     borderColor: Colors.primary,
     borderWidth: 1
   },
   infoContainer: {
-    marginLeft: 25,
-    width: 250,
+    marginLeft: 10,
+    width: 200,
     justifyContent: 'center',
     alignItems: 'flex-start'
   },
   title: {
     color: 'black',
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 5
   },
   address: {
     color: '#666',
-    fontSize: 16
+    fontSize: 14
+  },
+  button: {
+    marginHorizontal: 3
   }
 });
 

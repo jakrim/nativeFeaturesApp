@@ -1,10 +1,11 @@
 import * as FileSystem from 'expo-file-system';
 
-import { insertPlace, fetchPlaces } from '../../database';
-import ENV from '../../env';
+import { insertPlace, fetchPlaces, deletePlace } from '../database';
+import ENV from '../env';
 
 export const ADD_PLACE = 'ADD_PLACE';
 export const SET_PLACES = 'SET_PLACES';
+export const DELETE_PLACE = 'DELETE_PLACE';
 
 export const addPlace = (title, image, location) => {
   return async dispatch => {
@@ -38,7 +39,6 @@ export const addPlace = (title, image, location) => {
         location.lat,
         location.lng
       );
-      console.log(dbResult);
       dispatch({
         type: ADD_PLACE,
         placeData: {
@@ -53,7 +53,17 @@ export const addPlace = (title, image, location) => {
         }
       });
     } catch (err) {
-      console.log(err);
+      throw err;
+    }
+  };
+};
+
+export const removePlace = id => {
+  return async dispatch => {
+    try {
+      const dbResult = await deletePlace(id);
+      dispatch({ type: DELETE_PLACE, id: dbResult.insertId });
+    } catch (err) {
       throw err;
     }
   };
@@ -63,7 +73,6 @@ export const loadPlaces = () => {
   return async dispatch => {
     try {
       const dbResult = await fetchPlaces();
-      console.log(dbResult);
       dispatch({ type: SET_PLACES, places: dbResult.rows._array });
     } catch (err) {
       throw err;

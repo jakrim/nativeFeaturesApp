@@ -1,19 +1,19 @@
 import React from 'react';
-// import { StyleSheet, Text, View } from 'react-native';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
 
 import PlacesNavigator from './navigation/PlacesNavigator';
-import placesReducer from './store/reducers/places';
+import placesReducer from './store/places-reducer';
 import { init } from './database';
 
 init()
   .then(() => {
-    console.log('Initialized Database');
+    console.log('Initialized database');
   })
   .catch(err => {
-    console.log('Initializing Database FAILED.', err);
+    console.log('Initializing db failed.');
+    console.log(err);
   });
 
 const rootReducer = combineReducers({
@@ -29,12 +29,3 @@ export default function App() {
     </Provider>
   );
 }
-
-// const styles = StyleSheet.create({
-// container: {
-//   flex: 1,
-//   backgroundColor: '#fff',
-//   alignItems: 'center',
-//   justifyContent: 'center',
-// },
-// });
